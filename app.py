@@ -8,42 +8,40 @@ st.write("# Indian Stock Exchange Web APP")
 
 end_date = dt.now().strftime('%Y-%m-%d')
 
-automobile_symbols_NSE = ["TATAMOTORS.NS","BAJAJ-AUTO.NS", "TVSMOTOR.NS", "MARUTI.NS"]
-automobile_symbols_BSE = ["TATAMOTORS.BO","BAJAJ-AUTO.BO", "TVSMOTOR.BO", "MARUTI.BO"]
+# Get user input for NSE and BSE stocks
+stock_NSE = st.text_input("Enter NSE Stock:")
+stock_BSE = st.text_input("Enter BSE Stock:")
 
-automobile_data_NSE = {}
+# Combine user input with stock exchange suffix
+Stock_NSE = stock_NSE + ".NS"
+Stock_BSE = stock_BSE + ".BO"
 
-for symbol in automobile_symbols_NSE:
-    company_data = yf.Ticker(symbol)
-    history = company_data.history(period='1d', start='2010-5-31', end=end_date)
-    automobile_data_NSE[symbol] = history
+# Fetch data for NSE stock
+company_data_NSE = yf.Ticker(Stock_NSE)
+history_NSE = company_data_NSE.history(period='1d', start='2010-5-31', end=end_date)
 
-for symbol, data in automobile_data_NSE.items():
-    st.write(f"## {symbol} Data")
-    st.write("""
-    ### Closing Price National Stock Exchange
-    """)
-    st.line_chart(data['Close'], use_container_width=True, color="#AA00FF")
-    st.write("""
-    ### Volume National Stock Exchange
-    """)
-    st.line_chart(data['Volume'], use_container_width=True,color="#AAFF80")
-    
+# Fetch data for BSE stock
+company_data_BSE = yf.Ticker(Stock_BSE)
+history_BSE = company_data_BSE.history(period='1d', start='2010-5-31', end=end_date)
 
-automobile_data_BSE = {}
+# Display NSE stock data
+st.write(f"## {stock_NSE} Data")
+st.write("""
+### Closing Price National Stock Exchange
+""")
+st.line_chart(history_NSE['Close'], use_container_width=True, color="#AA00FF")
+st.write("""
+### Volume National Stock Exchange
+""")
+st.line_chart(history_NSE['Volume'], use_container_width=True, color="#AAFF80")
 
-for symbol in automobile_symbols_BSE:
-    company_data = yf.Ticker(symbol)
-    history = company_data.history(period='1d', start='2010-5-31', end=end_date)
-    automobile_data_NSE[symbol] = history
-
-for symbol, data in automobile_data_BSE.items():
-    st.write(f"## {symbol} Data")
-    st.write("""
-    ### Closing Price Mumbai Stock Exchange
-    """)
-    st.line_chart(data['Close'], use_container_width=True,color= "#AA00FF")
-    st.write("""
-    ### Volume Mumbai Stock Exchange
-    """)
-    st.line_chart(data['Volume'], use_container_width=True,color= "#AAFF80")
+# Display BSE stock data
+st.write(f"## {stock_BSE} Data")
+st.write("""
+### Closing Price Mumbai Stock Exchange
+""")
+st.line_chart(history_BSE['Close'], use_container_width=True, color="#AA00FF")
+st.write("""
+### Volume Mumbai Stock Exchange
+""")
+st.line_chart(history_BSE['Volume'], use_container_width=True, color="#AAFF80")
